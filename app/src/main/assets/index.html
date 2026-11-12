@@ -12,6 +12,7 @@
 @media(max-width:380px){.content{padding-left:14px;padding-right:14px}.profile-main{gap:11px;padding:15px 13px}.profile-photo-wrap{flex-basis:76px}.profile-photo{width:76px;height:96px}.profile-fullname{font-size:16px}.services-grid{gap:10px 9px}.service-tile{height:124px;font-size:14px}.service-icon{width:48px;height:48px}}
 @media(min-width:600px){body{max-width:430px;margin:0 auto;border-left:1px solid #333;border-right:1px solid #333}.nav{max-width:430px;left:50%;transform:translateX(-50%)}}
 
+.manager-label{display:block;color:#aab4c5;font-size:13px;margin:8px 0}.manager-items{display:grid;gap:8px;margin-top:8px}.manager-row{display:flex;align-items:center;gap:8px;background:#292a30;border:1px solid #45464b;border-radius:10px;padding:10px}.manager-row span{flex:1;min-width:0;font-size:13px;overflow-wrap:anywhere}.manager-row button{background:#743b42;color:#fff;border:0;border-radius:8px;padding:8px 10px;font-weight:700}.custom-entry{margin:12px 0;padding:14px;background:var(--panel);border:1px solid var(--line);border-radius:12px}.custom-entry h3{font-size:16px;margin:0 0 6px}.custom-entry p{font-size:13px;color:#c2c2c8;margin:0;white-space:pre-wrap}.manager-delete{display:none}.manager-active .manager-delete{display:inline-flex}
 /* App-wide text editor */
 .edit-mode [data-muster-edit-key]{outline:1px dashed #7daeff!important;outline-offset:3px;border-radius:3px;cursor:text}
 .edit-mode [data-muster-edit-key]:focus{outline:2px solid #7daeff!important;background:rgba(125,174,255,.08)}
@@ -34,7 +35,8 @@
 <div class="page" id="services"><div class="services-grid"><div class="service-tile"><span class="service-icon"><svg><use href="#tag"/></svg></span>Banner<br>Service</div><div class="service-tile"><span class="service-icon"><svg><use href="#hand"/></svg></span>Tuition Fees</div><div class="service-tile"><span class="service-icon"><svg><use href="#cart"/></svg></span>Services</div><div class="service-tile"><span class="service-icon"><svg><use href="#moodle"/></svg></span>Moodle</div><div class="service-tile"><span class="service-icon"><svg><use href="#puzzle"/></svg></span>Puzzles</div><div class="service-tile"><span class="service-icon"><svg><use href="#tools"/></svg></span>Complaints</div><div class="service-tile"><span class="service-icon"><svg><use href="#support"/></svg></span>Financial<br>Support</div></div></div>
 <div class="page" id="community"><div class="page-head">Community</div></div>
 <div class="page" id="settings"><div class="page-head">Settings</div><div class="tile">Personalize your local demo</div><div class="tile"><div style="font-size:14px;color:#aaa;margin-bottom:8px">Display name</div><input class="field" id="nameInput" value="Ahmed Mostafa Khalil Abdelmoneim"><div style="font-size:14px;color:#aaa;margin:8px 0">Student ID</div><input class="field" id="idInput" value="200078680"><div style="font-size:14px;color:#aaa;margin:8px 0">CGPA</div><input class="field" id="cgpaInput" value="2.61"><button class="save" id="saveInfo">Save changes</button><div class="subtle" style="margin-top:12px">Changes and selected photos are stored on this device only. This is an independent personal demo, not an official university app.</div></div><div class="tile"><label for="homePhotoPick" style="color:#9fc1ff;cursor:pointer">Change profile photo</label><input hidden type="file" id="homePhotoPick" accept="image/*"></div>
-<div class="tile"><div style="font-size:16px;font-weight:700;margin-bottom:6px">Edit all app data</div><div class="subtle" style="margin-bottom:12px">Turn on editing, then tap any text across Home, Profile, Services or Community to change it. Your edits are saved on this device.</div><div class="edit-tools"><button class="save" id="toggleEditMode" type="button">Start editing</button><button class="save" id="finishEditMode" type="button" style="background:#333;color:#eee;display:none">Done</button></div><div class="edit-note" id="editModeStatus">Text editing is off. Photos can still be changed using the photo controls.</div></div></div>
+<div class="tile"><div style="font-size:16px;font-weight:700;margin-bottom:6px">Edit all app data</div><div class="subtle" style="margin-bottom:12px">Turn on editing, then tap any text across Home, Profile, Services or Community to change it. Your edits are saved on this device.</div><div class="edit-tools"><button class="save" id="toggleEditMode" type="button">Start editing</button><button class="save" id="finishEditMode" type="button" style="background:#333;color:#eee;display:none">Done</button></div><div class="edit-note" id="editModeStatus">Text editing is off. Photos can still be changed using the photo controls.</div></div>
+<div class="tile" id="contentManager"><div style="font-size:16px;font-weight:700;margin-bottom:6px">Add &amp; remove app items</div><div class="edit-note" style="margin-bottom:12px">Add new cards to any section, or remove existing cards. Changes stay on this device.</div><label class="manager-label" for="managerPage">Choose section</label><select class="field" id="managerPage"><option value="home">Home</option><option value="profile">Profile</option><option value="services">Services</option><option value="community">Community</option></select><input class="field" id="managerTitle" placeholder="Item title" style="margin-top:10px"><textarea class="field" id="managerDetails" placeholder="Details (optional)" rows="3" style="margin-top:10px;resize:vertical"></textarea><button class="save" id="managerAdd" type="button" style="margin-top:10px">Add item</button><div class="manager-label" style="margin-top:18px">Existing items</div><div id="managerItems" class="manager-items"></div><div class="edit-note" id="managerStatus" aria-live="polite"></div></div></div>
 <p class="hint">Independent personal demo · Not an official MUST University application.</p></main>
 <nav class="nav"><button class="active" data-page="home"><span class="symbol"><svg><use href="#home"/></svg></span>Home</button><button data-page="profile"><span class="symbol"><svg><use href="#user"/></svg></span>Profile</button><button data-page="services"><span class="symbol"><svg><use href="#grid"/></svg></span>Services</button><button data-page="community"><span class="symbol"><svg><use href="#people"/></svg></span>Community</button><button data-page="settings"><span class="symbol"><svg><use href="#settings"/></svg></span>Settings</button></nav>
 <script>
@@ -92,5 +94,55 @@ function saveEditableText(el){
 setupEditableText();
 $('toggleEditMode').addEventListener('click',()=>setAppEditMode(true));
 $('finishEditMode').addEventListener('click',()=>setAppEditMode(false));
+const managerKey='muster_content_manager_v1';
+const managerSelectors={home:'.section',profile:'.academic-card,.balance-card,.contact-card',services:'.service-tile',community:'.community-item'};
+function readManagerData(){try{return JSON.parse(localStorage.getItem(managerKey)||'{"deleted":[],"added":[]}')}catch(e){return {deleted:[],added:[]}}}
+function writeManagerData(data){try{localStorage.setItem(managerKey,JSON.stringify(data));return true}catch(e){$('managerStatus').textContent='Storage is full. Could not save this change.';return false}}
+function managerPageItems(page){const root=$(page);if(!root)return [];return [...root.querySelectorAll(managerSelectors[page]||'.custom-entry')].filter(el=>!el.classList.contains('manager-hidden'))}
+function initManagedItems(){
+ const data=readManagerData();
+ Object.keys(managerSelectors).forEach(page=>{
+  managerPageItems(page).forEach((el,index)=>{const id=page+'-base-'+index;el.dataset.managerId=id;if(data.deleted.includes(id)){el.classList.add('manager-hidden');el.style.display='none'}});
+ });
+ data.added.forEach(item=>renderAddedItem(item));
+}
+function renderAddedItem(item){
+ const root=$(item.page);if(!root)return;
+ let el=document.createElement(item.page==='services'?'div':'article');
+ el.className=item.page==='services'?'service-tile custom-entry':'custom-entry';
+ el.dataset.managerId=item.id;
+ const h=document.createElement('h3');h.textContent=item.title;el.appendChild(h);
+ if(item.details){const p=document.createElement('p');p.textContent=item.details;el.appendChild(p)}
+ if(item.page==='services'){const grid=root.querySelector('.services-grid');(grid||root).appendChild(el)}else root.appendChild(el);
+}
+function refreshManager(){
+ const page=$('managerPage').value, data=readManagerData(), root=$(page), list=$('managerItems');
+ list.innerHTML='';
+ const items=[...managerPageItems(page),...root.querySelectorAll('.custom-entry')].filter((el,i,a)=>a.indexOf(el)===i&&!el.classList.contains('manager-hidden'));
+ if(!items.length){list.innerHTML='<div class="edit-note">No manageable items in this section yet.</div>';return}
+ items.forEach(el=>{
+  const row=document.createElement('div');row.className='manager-row';
+  const label=document.createElement('span');label.textContent=(el.querySelector('h3,.news-title,.section-title,.academic-title')||el).textContent.trim().replace(/\s+/g,' ').slice(0,90)||'Untitled item';
+  const del=document.createElement('button');del.type='button';del.textContent='Delete';
+  del.addEventListener('click',()=>{
+   const id=el.dataset.managerId;if(!id)return;
+   const latest=readManagerData();
+   if(id.includes('-base-')){if(!latest.deleted.includes(id))latest.deleted.push(id)}else{latest.added=latest.added.filter(x=>x.id!==id)}
+   if(writeManagerData(latest)){el.remove();$('managerStatus').textContent='Item removed.';refreshManager()}
+  });
+  row.append(label,del);list.appendChild(row);
+ });
+}
+$('managerPage').addEventListener('change',refreshManager);
+$('managerAdd').addEventListener('click',()=>{
+ const page=$('managerPage').value,title=$('managerTitle').value.trim(),details=$('managerDetails').value.trim();
+ if(!title){$('managerStatus').textContent='Write an item title first.';return}
+ const data=readManagerData(),item={id:'custom-'+Date.now()+'-'+Math.random().toString(36).slice(2,7),page,title,details};
+ data.added.push(item);
+ if(writeManagerData(data)){renderAddedItem(item);$('managerTitle').value='';$('managerDetails').value='';$('managerStatus').textContent='Item added.';refreshManager()}
+});
+initManagedItems();
+refreshManager();
+
 document.addEventListener('input',e=>{if(appEditMode&&e.target&&e.target.matches('[data-muster-edit-key]'))saveEditableText(e.target)});
 </script></body></html>
